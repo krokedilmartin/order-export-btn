@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Export Order Report</title>
+  <link rel="stylesheet" href="https://s.w.org/wp-includes/css/dashicons.css">
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #f1f1f1;
+      padding: 40px;
+    }
+    .box {
+      background: #fff;
+      border: 1px solid #ccc;
+      padding: 20px;
+      width: 340px;
+      border-radius: 6px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+    .button-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    button {
+      background-color: #2271b1;
+      border: none;
+      color: white;
+      padding: 10px 16px;
+      font-size: 14px;
+      cursor: pointer;
+      border-radius: 3px;
+    }
+    button:disabled {
+      background-color: #999;
+    }
+    .dashicons {
+      font-size: 18px;
+      color: #777;
+      cursor: help;
+    }
+    .tooltip-container {
+      position: relative;
+      display: inline-block;
+    }
+    .tooltip-container .tooltip-text {
+      visibility: hidden;
+      background-color: #23282d;
+      color: #fff;
+      text-align: left;
+      padding: 6px 10px;
+      border-radius: 4px;
+      font-size: 12px;
+      position: absolute;
+      z-index: 1;
+      top: 120%;
+      left: 0;
+      white-space: nowrap;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+    .tooltip-container:hover .tooltip-text,
+    .tooltip-container:focus-within .tooltip-text {
+      visibility: visible;
+      opacity: 1;
+    }
+    #status {
+      font-size: 13px;
+      color: #666;
+      margin-top: 12px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="box">
+  <h3>Export Order Data</h3>
+  <div class="button-wrapper">
+    <button id="exportBtn">Generate and Download Order Report</button>
+    <div class="tooltip-container">
+      <span class="dashicons dashicons-editor-help" aria-label="Help about the export function" tabindex="0"></span>
+      <div class="tooltip-text">
+        Generates a file containing order and system details, useful when contacting support.
+      </div>
+    </div>
+  </div>
+  <p id="status" style="display: none;">⏳ Generating order report...</p>
+</div>
+
+<script>
+  document.getElementById('exportBtn').addEventListener('click', function() {
+    const btn = this;
+    const status = document.getElementById('status');
+
+    btn.disabled = true;
+    status.style.display = 'block';
+
+    setTimeout(() => {
+      const orderId = 123;
+      const content = `Dummy file for order #${orderId}\n\nContents: Order info, system report, logs...`;
+      const blob = new Blob([content], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `order-report-${orderId}.txt`;
+      a.click();
+      URL.revokeObjectURL(url);
+
+      btn.disabled = false;
+      status.style.display = 'none';
+    }, 1500);
+  });
+</script>
+
+</body>
+</html>
